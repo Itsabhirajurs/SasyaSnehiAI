@@ -3,6 +3,15 @@
 ## Overview
 A deep learning-powered web application that detects plant diseases using MobileNetV2 transfer learning. Built with Flask and trained on 87,000+ plant images across 38 disease/healthy classes.
 
+## Sashyasnehi AI Advisory Extensions (Now Implemented)
+- Severity Estimation (HSV + OpenCV infected area %)
+- Environmental Risk Engine (OpenWeather humidity/temperature/rain/wind)
+- Chemical Impact & Safety Engine (`chemical_db.json` lookup)
+- Rule-Based Advisory Recommendation Engine
+- Multi-language LLM layer (English/Hindi/Kannada translation)
+- Follow-up GenAI Chat on result page
+- Severe-case consultant suggestion via Google Maps
+
 ## Quick Start
 
 ### 1. Start the Flask Server
@@ -18,6 +27,18 @@ The app will be available at: **http://127.0.0.1:5000**
 - **About**: Learn about the technology (http://127.0.0.1:5000/about)
 - **Upload**: Upload a plant image for disease detection (http://127.0.0.1:5000/upload)
 - **Result**: View predictions with recommendations
+
+### Optional API Configuration (for weather + LLM)
+Set environment variables before running:
+
+```bash
+set OPENWEATHER_API_KEY=your_openweather_key
+set OPENAI_API_KEY=your_openai_or_openrouter_key
+set OPENAI_BASE_URL=https://api.openai.com/v1
+set OPENAI_MODEL=gpt-4o-mini
+```
+
+Without these keys, the app still works and gracefully falls back.
 
 ## Training & Development Files
 - `plant Disease Detection.ipynb` - Current end-to-end training notebook (Google Colab style) using `vipoooool/new-plant-diseases-dataset`.
@@ -58,6 +79,15 @@ filesss/
 ├── mobilenetv2_best.keras          # Pre-trained model (10.9 MB)
 ├── plant Disease Detection.ipynb   # Training notebook for Google Colab
 ├── train_better_model.py           # Improved EfficientNetB0 training script
+├── data/
+│   └── chemical_db.json            # Chemical safety knowledge base
+├── services/
+│   ├── severity.py                 # HSV severity estimator
+│   ├── weather.py                  # OpenWeather integration
+│   ├── risk.py                     # Environmental risk scoring
+│   ├── chemical.py                 # Chemical safety analysis
+│   ├── advisory.py                 # Rule-based advisory generation
+│   └── llm_layer.py                # Translation + chat LLM integration
 ├── templates/
 │   ├── home.html                   # Landing page
 │   ├── upload.html                 # Image upload interface
@@ -110,13 +140,17 @@ Upload interface with drag-drop support
 ### POST /predict
 Upload an image for disease prediction
 - **Input**: multipart/form-data with 'file' field
-- **Output**: JSON `{"success": true}` (prediction stored in session)
+- **Extra inputs**: chemicals used, soil type, watering frequency, tilling info, soil test values, language, city/location
+- **Output**: JSON `{"success": true, "redirect": "/result"}` (full analysis stored in session)
 - **Redirect**: Browser redirects to /result
 
 ### GET /result
 Display prediction results
 - **Requires**: Active session with prediction data
-- **Shows**: Plant type, condition, confidence, recommendations
+- **Shows**: plant, disease, confidence, severity, risk, causes, actions, chemical warnings, alternatives, consultation suggestion, translated advisory, AI chat
+
+### POST /chat
+Answer follow-up farmer questions using analysis context from session
 
 ## Requirements Met
 ✅ Exact implementation from PDF specification

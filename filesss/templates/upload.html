@@ -34,13 +34,72 @@
     </section>
 
     <section class="container">
-      <div class="upload-box" id="drop-zone">
-        <p><strong>Drag &amp; Drop Image Here</strong></p>
-        <p class="small-muted">or click to browse from your device</p>
-        <p class="small-muted">Supported formats: JPG, JPEG, PNG (Max 16MB)</p>
-        <label for="file-input">Choose Image</label>
-        <input id="file-input" type="file" accept="image/*" />
-      </div>
+      <form id="analysis-form">
+        <div class="upload-box" id="drop-zone">
+          <p><strong>Drag &amp; Drop Image Here</strong></p>
+          <p class="small-muted">or click to browse from your device</p>
+          <p class="small-muted">Supported formats: JPG, JPEG, PNG (Max 16MB)</p>
+          <label for="file-input">Choose Image</label>
+          <input id="file-input" name="file" type="file" accept="image/*" />
+        </div>
+
+        <div class="card form-grid">
+          <div class="form-field form-field-full">
+            <label for="chemicals_used">Previously used chemicals</label>
+            <input id="chemicals_used" name="chemicals_used" type="text" placeholder="e.g. chlorpyrifos, mancozeb" />
+          </div>
+
+          <div class="form-field">
+            <label for="soil_type">Soil type</label>
+            <select id="soil_type" name="soil_type">
+              <option value="Unknown">Select soil type</option>
+              <option value="Clay">Clay</option>
+              <option value="Loam">Loam</option>
+              <option value="Sandy">Sandy</option>
+              <option value="Silty">Silty</option>
+              <option value="Peaty">Peaty</option>
+              <option value="Chalky">Chalky</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="watering_frequency">Watering per week</label>
+            <input id="watering_frequency" name="watering_frequency" type="number" min="0" max="14" placeholder="e.g. 4" />
+          </div>
+
+          <div class="form-field">
+            <label for="tilling_info">Tilling info (optional)</label>
+            <input id="tilling_info" name="tilling_info" type="text" placeholder="e.g. monthly tilling" />
+          </div>
+
+          <div class="form-field">
+            <label for="language">Preferred language</label>
+            <select id="language" name="language">
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="kn">Kannada</option>
+            </select>
+          </div>
+
+          <div class="form-field form-field-full">
+            <label for="soil_test_values">Soil test values (optional)</label>
+            <textarea id="soil_test_values" name="soil_test_values" rows="3" placeholder="pH, NPK, EC, micronutrients (if available)"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="city">City/Village (for weather)</label>
+            <input id="city" name="city" type="text" placeholder="e.g. Mysuru" />
+          </div>
+
+          <div class="form-field form-field-inline">
+            <button type="button" class="btn-secondary" id="use-location">Use My Location</button>
+            <span class="small-muted" id="location-status">Optional</span>
+          </div>
+
+          <input id="latitude" name="latitude" type="hidden" />
+          <input id="longitude" name="longitude" type="hidden" />
+        </div>
+      </form>
 
       <div class="tips">
         <h3>Tips for Best Results</h3>
@@ -64,9 +123,20 @@
     <script>
       const dropZone = document.getElementById("drop-zone");
       const fileInput = document.getElementById("file-input");
+      const analysisForm = document.getElementById("analysis-form");
+      const useLocationBtn = document.getElementById("use-location");
+      const locationStatus = document.getElementById("location-status");
+      const latitudeInput = document.getElementById("latitude");
+      const longitudeInput = document.getElementById("longitude");
 
       function uploadFile(file) {
         const formData = new FormData();
+        const formValues = new FormData(analysisForm);
+        formValues.forEach((value, key) => {
+          if (key !== "file") {
+            formData.append(key, value);
+          }
+        });
         formData.append("file", file);
 
         fetch("/predict", {
@@ -76,7 +146,7 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              window.location.href = "/result";
+              window.location.href = data.redirect || "/result";
             } else {
               alert(data.error || "Upload failed");
             }
@@ -108,6 +178,25 @@
         if (file) {
           uploadFile(file);
         }
+      });
+
+      useLocationBtn.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          locationStatus.textContent = "Geolocation not supported";
+          return;
+        }
+
+        locationStatus.textContent = "Fetching location...";
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            latitudeInput.value = position.coords.latitude;
+            longitudeInput.value = position.coords.longitude;
+            locationStatus.textContent = "Location added";
+          },
+          () => {
+            locationStatus.textContent = "Location permission denied";
+          }
+        );
       });
     </script>
   </body>

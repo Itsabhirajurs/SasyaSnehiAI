@@ -40,25 +40,108 @@
           <img src="{{ url_for('static', filename=image_path) }}" alt="Uploaded leaf" />
         </div>
         <div class="card">
-          <h3>Plant Type</h3>
+          <h3>Plant Name</h3>
           <p>{{ prediction.plant_type }}</p>
-          <h3>Condition</h3>
+          <h3>Detected Disease</h3>
           <p>{{ prediction.condition }}</p>
           <p class="small-muted">Confidence: {{ (prediction.confidence * 100) | round(2) }}%</p>
+          <h3>Severity Level</h3>
+          <p>{{ prediction.severity_level }} ({{ prediction.infected_percentage }}% infected area)</p>
+          <h3>Environmental Risk</h3>
+          <p>{{ prediction.risk_level }} (Score: {{ prediction.risk_score }})</p>
         </div>
       </div>
 
       <div class="card" style="margin-top: 24px;">
-        {% if prediction.status == 'healthy' %}
-        <h3>Keep Your Plant Healthy</h3>
-        {% else %}
-        <h3>Recommended Actions</h3>
-        {% endif %}
+        <h3>Weather Context</h3>
+        {% if prediction.weather and prediction.weather.available %}
         <ul>
-          {% for item in prediction.recommendations %}
+          <li>Location: {{ prediction.weather.city }}</li>
+          <li>Humidity: {{ prediction.weather.humidity }}%</li>
+          <li>Temperature: {{ prediction.weather.temperature }}°C</li>
+          <li>Rain Probability: {{ prediction.weather.rain_probability }}%</li>
+          <li>Wind Speed: {{ prediction.weather.wind_speed }} m/s</li>
+        </ul>
+        {% else %}
+        <p class="small-muted">Weather unavailable: {{ prediction.weather.reason if prediction.weather else 'Not available' }}</p>
+        {% endif %}
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Possible Causes</h3>
+        <ul>
+          {% for item in prediction.possible_causes %}
           <li>{{ item }}</li>
           {% endfor %}
         </ul>
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Recommended Actions</h3>
+        <p><strong>Urgency:</strong> {{ prediction.urgency }}</p>
+        <p><strong>Spread Warning:</strong> {{ prediction.spread_warning }}</p>
+        <ul>
+          {% for item in prediction.recommended_actions %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Chemicals to Avoid</h3>
+        {% if prediction.chemicals_to_avoid %}
+        <ul>
+          {% for item in prediction.chemicals_to_avoid %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="small-muted">No high-impact chemicals identified from your input.</p>
+        {% endif %}
+
+        <h3>Safer Alternatives</h3>
+        {% if prediction.safer_alternatives %}
+        <ul>
+          {% for item in prediction.safer_alternatives %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="small-muted">No alternatives suggested yet.</p>
+        {% endif %}
+
+        {% if prediction.chemical_warnings %}
+        <h3>Chemical Safety Warnings</h3>
+        <ul>
+          {% for item in prediction.chemical_warnings %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Advisory ({{ 'English' if prediction.language == 'en' else ('Hindi' if prediction.language == 'hi' else 'Kannada') }})</h3>
+        <p>{{ prediction.advisory_translated }}</p>
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Consultation Suggestion</h3>
+        {% if prediction.consultation_suggestion %}
+        <p>{{ prediction.consultation_suggestion.message }}</p>
+        <p><a class="btn-secondary" target="_blank" href="{{ prediction.consultation_suggestion.maps_link }}">Find Nearby Agricultural Nursery</a></p>
+        {% else %}
+        <p class="small-muted">Current severity does not require immediate consultant referral.</p>
+        {% endif %}
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        <h3>Chat with AI</h3>
+        <div id="chat-box" class="chat-box"></div>
+        <div class="chat-row">
+          <input id="chat-input" type="text" placeholder="Ask a follow-up question..." />
+          <button id="chat-send" class="btn-primary" type="button">Send</button>
+        </div>
       </div>
 
       <div class="result-actions">
@@ -74,5 +157,45 @@
         <p>Copyright 2025 Smart Bridge Hyderabad. All rights reserved.</p>
       </div>
     </footer>
+
+    <script>
+      const chatBox = document.getElementById("chat-box");
+      const chatInput = document.getElementById("chat-input");
+      const chatSend = document.getElementById("chat-send");
+
+      function addChatMessage(role, text) {
+        const div = document.createElement("div");
+        div.className = `chat-message ${role}`;
+        div.textContent = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      chatSend.addEventListener("click", async () => {
+        const question = chatInput.value.trim();
+        if (!question) {
+          return;
+        }
+
+        addChatMessage("user", question);
+        chatInput.value = "";
+
+        try {
+          const response = await fetch("/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+          const data = await response.json();
+          if (data.reply) {
+            addChatMessage("assistant", data.reply);
+          } else {
+            addChatMessage("assistant", data.error || "Unable to answer right now.");
+          }
+        } catch (error) {
+          addChatMessage("assistant", "Unable to answer right now.");
+        }
+      });
+    </script>
   </body>
 </html>
