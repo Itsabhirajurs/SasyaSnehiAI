@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlantCare AI - Plant Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container nav-container">
+        <div class="nav-logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M11 20a7 7 0 0 1 9.8-6.1C15.5 5 17 4.4 19 2c1.9 2 4 4.1 2.8 8.1-1.1 3.6-4.8 5.5-8.7 4.5-0.8 2.7-3.1 5.4-6.1 5.4z" />
+              <path d="M2 21c0-3 1.8-5.3 5.1-6 2.3-0.5 4.8-1.5 5.9-3" />
+            </svg>
+          </div>
+          <span>PlantCare AI</span>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a class="btn-nav" href="/upload">Get Started</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="hero-tag">AI-Powered</span>
+          <h1 class="hero-title">Plant Disease Detection</h1>
+          <p class="hero-subtitle">
+            Protect your crops with cutting-edge artificial intelligence. Instant
+            disease identification for healthier plants and better yields.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="/upload">Upload Image</a>
+            <a class="btn-secondary" href="/about">Learn More</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Why Choose PlantCare AI?</h3>
+          <p class="small-muted">
+            Built on MobileNetV2 transfer learning with high accuracy across 38
+            plant disease classes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Why Choose PlantCare AI?</h2>
+        <div class="feature-grid">
+          <div class="card">
+            <h3>Instant Detection</h3>
+            <p>Get results in seconds with our advanced AI model.</p>
+          </div>
+          <div class="card">
+            <h3>High Accuracy</h3>
+            <p>Powered by MobileNetV2 for precise disease identification.</p>
+          </div>
+          <div class="card">
+            <h3>Easy to Use</h3>
+            <p>Simple interface. Upload a photo and get instant diagnosis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats">
+      <div class="stat">
+        <h3>38+</h3>
+        <p>Plant Diseases</p>
+      </div>
+      <div class="stat">
+        <h3>95%</h3>
+        <p>Accuracy Rate</p>
+      </div>
+      <div class="stat">
+        <h3>10+</h3>
+        <p>Plant Species</p>
+      </div>
+      <div class="stat">
+        <h3>24/7</h3>
+        <p>Available</p>
+      </div>
+    </section>
+
+    <section class="cta container">
+      <h2>Ready to Protect Your Plants?</h2>
+      <p>Start detecting plant diseases now with our AI-powered system.</p>
+      <a class="btn-primary" href="/upload">Get Started Now</a>
+    </section>
+
+    <section class="container">
+      <h2 class="section-title">About Plant Disease Detection System</h2>
+      <p class="small-muted">
+        Our advanced AI-powered platform utilizes state-of-the-art deep learning
+        technology to accurately identify plant diseases in real-time. With a
+        comprehensive database of plant conditions and diseases, we help
+        farmers, gardeners, and agricultural professionals make informed
+        decisions about plant health management.
+      </p>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Smart Bridge Hyderabad</p>
+        <p>Empowering agriculture through innovative AI solutions</p>
+        <p>Copyright 2025 Smart Bridge Hyderabad. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

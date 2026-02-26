@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result - Plant Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container nav-container">
+        <div class="nav-logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M11 20a7 7 0 0 1 9.8-6.1C15.5 5 17 4.4 19 2c1.9 2 4 4.1 2.8 8.1-1.1 3.6-4.8 5.5-8.7 4.5-0.8 2.7-3.1 5.4-6.1 5.4z" />
+              <path d="M2 21c0-3 1.8-5.3 5.1-6 2.3-0.5 4.8-1.5 5.9-3" />
+            </svg>
+          </div>
+          <span>PlantCare AI</span>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/upload" class="btn-nav">New Analysis</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="page-hero">
+      <div class="container">
+        <span class="badge">Analysis Complete</span>
+        <h1 class="page-title">Here's what we found</h1>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="result-layout">
+        <div class="card">
+          <h3>Uploaded Image</h3>
+          <img src="{{ url_for('static', filename=image_path) }}" alt="Uploaded leaf" />
+        </div>
+        <div class="card">
+          <h3>Plant Type</h3>
+          <p>{{ prediction.plant_type }}</p>
+          <h3>Condition</h3>
+          <p>{{ prediction.condition }}</p>
+          <p class="small-muted">Confidence: {{ (prediction.confidence * 100) | round(2) }}%</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 24px;">
+        {% if prediction.status == 'healthy' %}
+        <h3>Keep Your Plant Healthy</h3>
+        {% else %}
+        <h3>Recommended Actions</h3>
+        {% endif %}
+        <ul>
+          {% for item in prediction.recommendations %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="result-actions">
+        <a class="btn-primary" href="/upload">Analyze Another Image</a>
+        <a class="btn-secondary" href="/">Back to Home</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Smart Bridge Hyderabad</p>
+        <p>Empowering agriculture through innovative AI solutions</p>
+        <p>Copyright 2025 Smart Bridge Hyderabad. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

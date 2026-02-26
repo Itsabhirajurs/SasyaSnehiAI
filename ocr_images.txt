@@ -1,0 +1,343 @@
+
+
+===== PAGE 17 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1506x1808) --
+om
+© apppy 1X
+EY
+@ app.py >...
+82     @app-route(*/predict’, methods=[*POST*])
+83     def predict():
+84       if ‘file’ not in request.files:
+85           return jsonify({'error’: "No file uploaded'}), 400
+86
+87        file = request.files['file’]
+88
+89          if file.filename == '':
+98           return jsonify({'error’: "No file selected'}), 400
+91
+92          if file:
+93            filename = secure_filename(file.filename)
+94            filepath = os.path.join(app.config[ "UPLOAD _FOLDER*], filename)
+95            file.save(filepath)
+96
+97            try:
+98                prediction = predict_image(filepath)
+ee)
+1e0              # Save image to static folder for display
+1@1                static_filename = f"upload_{secrets.token_hex(8)}.jpg™
+102             static_path = os.path.join(app.config[ ‘STATIC_FOLDER'], ‘images’, static_filename)
+1@3               Image .open(filepath) .save(static_path)
+104
+1e5               # Store in session
+186               session['prediction’] = prediction
+107               session[*image_path’] = f'images/{static_filename}*
+188
+169              os.remove(filepath) # Clean up temp file
+116
+111              return jsonify({*success': True})
+112           except Exception as e:
+113                 if os.path.exists(filepath):
+114                   os.remove(filepath)
+115             return jsonify({*error’: str(e)}), 500
+116
+117     @app-route(*/result*)
+118     def result():
+119        prediction = session.get( ‘prediction’ )
+120        image _path = session.get(*image_ path")
+121
+122         if not prediction:
+123           return redirect(url_for(‘upload*))
+124
+125        return render_template(‘result.html’, prediction=prediction, image_path=image_path)
+126
+127      if _name_ == *_main_':
+128         load_model()
+129       app.run(debug=True, host="0.0.0.0', port=5@@)
+
+
+===== PAGE 18 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1334x1142) --
+templates > dj about.html
+
+1      <!DOCTYPE html>
+
+2      <html lang="en">
+
+3      <head>
+
+4          <meta charset="UTF-8">
+
+5         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+6         <title>About - Plant Disease Detection</title>
+
+7         <link rel="stylesheet" href="{{ url_for('static', filename='"style.css') }}">
+8      </head>
+
+9      <body>
+
+1e        <!-- Navigation -->
+
+11           <nav Class="navbar">
+
+12               <div class="nav-container">
+
+13                 <div class="nav-logo">
+
+14                      <div class="logo-icon">
+
+15                        <svg xmlns="http: //wew.w3.org/2000/svg" width="24" height="24" viewBox="@ @ 24 24" fi
+16                             <path d="M11 20A7 7 @ @ 1 9.8 6.1C15.5 5 17 4.48 19 2cl 2 2 4.18 2 8 @ 5.5-4.78 1
+v7                            <path d="M2 21c@-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+18                        </svg>
+
+19                    </div>
+
+2e                     <span class="logo-text">PlantCare AI</span>
+
+21                  </div>
+
+22                 <ul class="nav-menu">
+
+23                    <li><a href="/">Home</a></1i>
+
+24                   <li><a href="/about" class="active">About</a></1li>
+
+25                   <li><a href="/upload" class="btn-nav">Get Started</a></li>
+
+26                  </ul>
+
+27             </div>
+
+28          </nav>
+
+29
+
+30         <!-- About Hero -->
+
+31          «section class="about-hero">
+
+32               <div class="container">
+
+EE}                 <hi class="page-title">About Our Technology</h1>
+
+34                <p Class="page-subtitle">Transforming agriculture with artificial intelligence</p>
+35             </div>
+
+36          </section>
+
+37
+
+38         <!-- Mission Section -->
+
+39          «section class="mission-section">
+42               <div class="container">
+
+-- image 4 (2154x534) --
+ate =) AAU IY
+WARNING: This is a development server. Do not use it in a production deployment. Use a production
+WSGI server instead.
+
+* Running on all addresses (0.0.0.0)
+
+* Running on http://127.0.0.1:5000
+
+* Running on http://192.168.68.69:50e0
+
+Press CTRL+C to quit
+
+* Restarting with stat
+Model loaded successfully from mobilenetv2_best.keras
+
+* Debugger is active!
+
+* Debugger PIN: 124-630-444
+
+
+===== PAGE 19 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1763x2048) --
+@ PlantCare Al                                                      Home About   ==
+Al-Powered
+e
+Plant Disease                                   er aS
+7   \     J ON  Sv
+e                    .        ‘v ‘sles  WT beseg e?
+etection  eae
+Protect your crops with cutting-edge artificial intelligence.             e  FATS feo cae Be  gor
+Instant disease identification for healthier plants and better            aa fF Oe    -
+yields.                                 Vee           =
+ty Upload Image:        Learn More
+Why Choose PlantCare Al?
+©                             w                             =)
+Instant Detection                               High Accuracy                                   Easy to Use
+Get results in seconds with our advanced Al                  Powered by MobileNetV2 architecture for                    ‘Simple interface - just upload a photo and
+model trained on thousands of plant                             precise disease identification across                              get instant diagnosis. No technical
+images.                                                                 multiple plant species.                                              knowledge required.
+%                 10                  24/7
+38+            95%               +
+Plant Diseases                                      Accuracy Rate                                       Plant Species                                          Available
+Ready to Protect Your Plants?
+Start detecting plant diseases now with our Al-powered system
+Get Started Now
+About Plant Disease Detection System
+‘Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+o  Smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All ights reserved.
+
+
+===== PAGE 20 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1484x2048) --
+@  PlantCare Al                                                                                                              Home About
+Transforming agriculture with artificial intelligence
+Our Mission
+We are committed to revolutionizing plant health management
+through cutting-edge artificial intelligence. Our goal is to empower
+farmers, gardeners, and agricultural professionals with instant,
+accurate disease detection to protect crops and increase yields.
+By making advanced Al technology accessible to everyone, we help
+prevent crop losses, reduce pesticide use, and promote sustainable
+farming practices.
+How It Works
+Upload Image                             Al Analysis                              Get Results
+Take a photo of your plant leaf showing                    Our MobileNetv/2 model processes the                    Receive instant diagnosis with plant type
+‘symptoms or upload an existing image.                      image using deep learning algorithms.                            and condition identification.
+Our Al Model
+Architecture                                Training Data                             ‘Supported Plants
+‘MobileNetV2 with transfer learning                  Thousands of labeled plant images               Apple, Tomato, Potato, Grape, Com, and
+Disease Coverage
+38+ different diseases and healthy
+Benefits
+Ps          ©          @          4
+Early Detection                        Cost Effective                           Sustainable                          Fast & Accurate
+Identify diseases before they                      Reduce crop losses and                           Minimize unnecessary                         Get results in seconds with
+spread                                           treatment costs                                       pesticide use                                        high precision
+Try It Now
+Experience the power of Al-driven plant disease detection
+About Plant Disease Detection System
+‘Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+© smart oridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+
+===== PAGE 21 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1920x1361) --
+@  PlantCare Al                                                                                         Home About
+Take or upload a clear photo of the affected plant leaf
+Drag & Drop Image Here
+or click to browse from your device
+Supported formats: JPG, JPEG, PNG (Max 16MB)
+(Q Choose Image
+ Tips for Best Results
+Take photos in good                 Focus on the affected
+Ke    th          steady
+v  lighting                     Y eat area                    V_ Keep the camera steady
+J Avoid blurry images
+© smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. Alll rights reserved.
+
+
+===== PAGE 22 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1920x1534) --
+@ PlantCare Al                                                                      Home — About   | NewAnalysis |
+Analysis Complete
+Here's what we found
+Uploaded Image
+¥ HEALTHY PLANT
+Tippee Sin res ti eee tenn RY Pee tae Syn! 3: Nae      ‘ee
+U2 Se APM Sree cles ray       SE                              PLANT TYPE
+pens     ae Nis SO Nis Nt                    Tomato
+poets a         SSS etn ees Ae aaa Meee
+A ENE}            LO oR ae   Syne    a tart oe
+de setatr aes,         eee me Secret                              CONDITION
+Sisicser eae     Sf: ESS deep aS                     healthy
+aot SaNaGMia Peis vis Eee Reman nee
+Rienahinaiea conretatg a ec ina Ua eee asa eace rage ey
+‘X Keep Your Plant Healthy
+— Continue regular watering and care
+— Ensure adequate sunlight and nutrients
+— Monitor for any changes in appearance
+— Maintain good air circulation
+2) Analyze Another Image            @ Back to Home
+@ smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+-- image 4 (1920x1534) --
+@ Prantcare al                                                      Home About
+Analysis Complete
+Here's what we found
+Uploaded Image
+kelp: thy, tated Tact     »
+he CSTR at See a” AAR aR
+eae RQ MRE Leer Rica dag by                        PLANT TYPE
+pBihert ec mmas Gnawa MOY rs
+epee 2 ghee
+Reise a ee Ane 6                       C         .
+HE SESE ap age Zener ary                              orn (maize)
+eliked eed att eat 8 Bd
+cee
+Aes CGE Mea rays                                                         CONDITION
+Patras oi Rs a                            Common rust
+2 Recommended Actions
+— Isolate affected plants to prevent spread
+— Consult with an agricultural expert
+— Consider appropriate treatment methods
+— Monitor other plants for similar symptoms:
+<) Analyze Another Image           @ Back to Home
+@ smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.

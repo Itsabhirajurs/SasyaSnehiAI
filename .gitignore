@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# VS Code
+.vscode/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flask runtime
+instance/
+*.sqlite3
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Uploaded/generated runtime files
+filesss/uploads/*
+uploads/*
+filesss/static/images/*
+static/images/*

@@ -1,0 +1,281 @@
+
+
+===== OCR PAGE 5 =====
+< 6 SMARTBRIDGE
+Create the Project folder which contains files as shown below
+
+static
+
+images
+
+ts Style.css
+
+f@ templates
+about_html
+home.html
+result.html
+upload.html
+uploads
+app-py
+
+[) mobilenetv2_best.keras
+
+plant Disease Detection.ipynb
+
+Project Structure Expta
+e static/
+Contains static assets (CSS, JavaScript, uploaded images)
+© images/ - Stores user-uploaded images for display
+0 style.css - Application styling
+
+e templates/
+HTML templates for Flask application
+
+o home.html - Landing page
+
+© about.html - Information about the technology
+© upload.html - Image upload interface
+
+© result.html - Disease prediction results
+
+e uploads/
+Temporary storage for file uploads
+
+° app.py
+Flask application backend
+
+e mobilenetv2_best.keras
+Trained model file
+
+e@ plant Disease Detection.ipynb
+Jupyter notebook with model training code
+
+Milestone 1: Data Collection & Data Preprocessing
+
+Ni
+
+]
+
+Smart
+Internz
+
+
+===== OCR PAGE 17 =====
+Al Smart
+< SMARTBRIDGE Internz
+Milestone 5: Application Building
+
+In this section, we will build a complete web application integrated with our trained
+MobileNetV2 model. The application provides an intuitive user interface where users can upload
+plant leaf images and receive instant disease detection results with actionable
+recommendations.
+
+This milestone includes the following activities:
+e Building HTML Templates
+
+e Creating CSS Stylesheets
+e Developing Flask Backend
+
+Activity 5.1: Build Flask Backend (app.py)
+
+File Location: app.py (in project root directory)
+
+@ app.py >
+
+@app.route('/predict",
+def predict
+if ‘file’ not in
+return jsonify({ : ‘No file uploaded'}), 400
+
+e. filename
+
+return jsonify({"error": ‘No file selected'}), 400
+
+secure_+
+file.save(filepa
+
+try:
+tion = predict_image(filepat
+
+‘predicti
+n[‘image_path*
+
+os .remove(fi
+
+return jsonify
+except Exception as
+if os.path.exists
+os-remove(fil
+
+return jsonify({
+
+@app.route ult*
+def result
+i ion.get(’ prediction’
+path ion.get(’image_path*
+
+if not p
+return redirect(url_for(“upload")
+
+return render_template(‘result.html',
+
+if _name_ ="
+load_model
+run
+
+
+
+===== OCR PAGE 18 =====
+VA Smart
+«< SMARTBRIDGE Internz
+
+Run the code:
+
+* Running on all addresses (0.0.0.0)
+* Running on http://127.0.0.1:5000
+* Running on http://192.168.68.69:5000
+
+Press CTRL+C to quit
+
+* Restarting with stat
+
+Model loaded successfully from mobilenetv2_best.keras
+* Debugger is active!
+
+* Debi er PIN: 124-630-444
+
+Activity 5.2: Building HTML Templates
+
+For this project, we will create four HTML files that form the complete user interface. All HTML
+files should be saved in the templates folder.
+
+Activity 5.2.1: Create Home Page (home.html)
+
+The home page serves as the landing page for PlantCare AI, showcasing the application's
+features and capabilities.
+
+File Location: templates/home.html
+
+Key Features:
+
+e Hero section with call-to-action
+e Feature highlights (Instant Detection, High Accuracy, Easy to Use)
+e Statistics display (38+ diseases, 95% accuracy, 10+ plant species)
+e Responsive navigation bar
+
+Code:
+
+templates > dj about.html
+
+t started<
+
+with artificial intelli,
+
+
+
+===== OCR PAGE 19 =====
+Lets Bridge the Gap
+
+5 SMARTBRIDGE vl internz
+
+© Prsnscarens sone se
+Al-Powered
+
+Plant Disease
+
+Detection
+
+38+ 95% 10+ 24/7
+
+ts Acaxnyte pesos
+
+Ready to Protect Your Plants?
+
+About Plant Disease Detection System
+
+
+
+===== OCR PAGE 20 =====
+A F| Smart
+iG SMARTBRIDGE Al Internz
+
+Activity 5.2.2: Create About Page (about.html)
+
+The About page provides detailed information about the technology, mission, and Al model used
+in PlantCare Al.
+
+File Location: templates/about.html
+
+About Our Technology
+
+Our Mission
+
+Our Al Model
+
+
+
+===== OCR PAGE 21 =====
+«< G SMARTBRIDGE
+
+Lets Bridge the Gap
+
+Activity 5.2.3: Create Upload Page (upload.html)
+
+The upload page allows users to select and upload plant leaf images for disease detection.
+
+File Location: templates/upload.html
+
+Upload Plant
+
+Drag & Drop Image Here
+
+= Tips for Best Results
+
+Ni
+
+Smart
+Internz
+
+
+===== OCR PAGE 22 =====
+«< G SMARTBRIDGE
+
+Lets Bridge the Gap
+Activity 5.2.4: Create Result Page (result.html)
+
+The result page displays the disease detection analysis with detailed information and
+recommendations.
+
+File Location: templates/result.html
+@ rca
+
+Analysis Complete
+
+Uploaded image
+
+©
+
+Corn (maize)
+
+Common rust
+
+1 Pacem tone
+
+@ rncoreat
+Analysis Complete
+
+Uploaded image
+
+G
+=
+
+healthy
+
+= Keep Your Pant Het
+
+© sean ge tn
+
+SN
+
+Smart
+Internz

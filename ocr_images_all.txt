@@ -1,0 +1,963 @@
+
+
+===== PAGE 1 IMAGE OCR (2 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+
+===== PAGE 2 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1132x646) --
+OGG O8
+hi =e
+User Ea   _
+
+
+===== PAGE 3 IMAGE OCR (2 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+
+===== PAGE 4 IMAGE OCR (2 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+
+===== PAGE 5 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (694x800) --
+V ‘@ static
+> g& images
+css Style.css
+\ tg templates
+dj about.html
+dj home.html
+dj result.html
+dj upload.html
+VY ‘@ uploads
+‘@ app.py
+[?) mobilenetv2_best.keras
+© plant Disease Detection.ipynb
+
+
+===== PAGE 6 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (994x782) --
+new-pLant-diseases-dataset/
+New Plant Diseases Dataset (Augmented) /
+T | train/
+Apple___Apple_scab/
+Apple___Black_rot/
+    E Apple___Cedar_apple_rust/
+Apple___healthy/
+|   |   C ... (38 classes total)
+| L_ Tomato___healthy/
+|       valid/
+Apple___Apple_scab/
+|      C ... (same 38 classes)
+|       L_ Tomato___healthy/
+
+-- image 4 (1694x352) --
+(>)  # Upload your kaggle.json file
+from google.colab import files
+files.upload() # This will prompt you to upload kaggle.json
+Sa  OE) kaggle json
+kaggle.json(application/json) - 70 bytes, last modified: 9/15/2025 - 100% done
+Saving kaggle.json to kaggle.json
+
+
+===== PAGE 7 IMAGE OCR (5 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1572x586) --
+# Install required packages
+
+!Ipip install -q kaggle “tensorflow>=2.17.0" gradio matplotlib
+# Python imports & configuration
+
+import os
+
+import sys
+
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+import tensorflow as tf
+
+from tensorflow import keras
+
+from tensorflow.keras import layers
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+-- image 4 (1878x1112) --
+Imkdir -p ~/.kaggle
+Icp kaggle.json ~/.kaggle/
+!chmod 600 ~/.kaggle/kaggle.json
+# If dataset not downloaded yet, download & unzip (comment out if already present)
+import os
+if not os.path.exists("/content/new-plant-diseases-dataset"):
+!Ikaggle datasets download -d vipoooool/new-plant-diseases-dataset -p /content
+!unzip -q /content/new-plant-diseases-dataset.zip -d /content/new-plant-diseases-dataset
+# Confirm dataset presence (small print)
+Ils -lah /content/new-plant-diseases-dataset | sed -n ‘1,20@p'
+Dataset URL: https://ww.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset
+License(s): copyright-authors
+Downloading new-plant-diseases-dataset.zip to /content
+97% 2.61G/2.70G [00:27<@0:02, 36.6MB/s]
+100% 2.70G/2.70G [00:27<00:00, 107MB/s]
+total 20K
+drwxr-xr-x 5 root root 4.0K Oct 31 06:24 .
+drwxr-xr-x 1 root root 4.0K Oct 31 06:23 ..
+drwxr-xr-x 3 root root 4.0K Oct 31 @6:23 new plant diseases dataset (augmented)
+drwxr-xr-x 3 root root 4.0K Oct 31 @6:23 New Plant Diseases Dataset (Augmented)
+drwxr-xr-x 3 root root 4.0K Oct 31 06:24 test
+
+-- image 5 (1271x530) --
+# User / experiment configuration
+IMG SIZE = (224, 224)
+BATCH SIZE = 32
+EPOCHS = 5
+N_LAST_LAYERS = 10 # Unfreeze last 10 layers for fine-tuning
+SEED = 1337
+# Dataset paths
+train_dir = "/content/new-plant-diseases-dataset/new plant diseases dataset (augnented)/New Plant Diseases Dataset (Augnented)/train”
+valid_dir = "/content/new-plant-diseases-dataset/new plant diseases dataset (augmented) /New Plant Diseases Dataset (Augmented)/valid"
+# Verify paths exist
+for p in [train dir, valid dir]:
+if not os.path.exists(p):
+
+print(f"ERROR: path not found: {p}")
+
+sys.exit(1)
+print("train_dir:", train_dir)
+print("valid_dir:", valid dir)
+train_dir: /content/new-plant-diseases-dataset/new plant diseases dataset (augmented) /New Plant Diseases Dataset (Augmented)/train
+valid dir: /content/new-plant-diseases-dataset/new plant diseases dataset (augmented) /New Plant Diseases Dataset (Augmented)/valid
+
+
+===== PAGE 8 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1834x1354) --
+© import random
+from IPython.display import Image, display
+# Function to display random samples from each class
+def show_sample images(base path, num_classes=5, images per_class=3):
+"""Display random sample images from the dataset"""
+class names = os.listdir(base_ path)
+random classes = random.sample(class names, min(num_classes, len(class_names)) ))
+fig, axes = plt.subplots(num_classes, images per class,
+figsize=(12, 3*num_classes))
+fig.suptitle( ‘Sample Images from Dataset’, fontsize=16)
+for i, class_name in enumerate(random classes):
+class path = os.path.join(base path, class_name)
+images = os.listdir(class_path)
+random images = random.sample(images, min(images per_class, len(images) )})
+for j, img name in enumerate(random_ images):
+img path = os.path.join(class path, img name)
+img = plt.imread(img_path)
+axes[i, j]-imshow(img)
+axes[i, j].axis(‘off')
+if j ==:
+axes[i, j]-set_title(class name.replace('___‘, ‘\n'), fontsize=10)
+plt.tight_layout()
+plt.show()
+
+-- image 4 (820x810) --
+pote                      Sample Images trom Dataset
+co
+Late_bight
+Bact         ae                                                                f
+my     er                  :                       rs
+aselo
+Black rst
+Arcio
+realty
+as                       .            nae
+rquesn
+Paetery miiew
+
+
+===== PAGE 9 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1454x1208) --
+# Count images in each split
+def count_images(directory):
+"“"Count total images and images per class"""
+total_images = @
+class counts = {}
+for class name in os.listdir(directory):
+class path = os.path.join(directory, class_name)
+if os.path.isdir(class_ path):
+num_images = len(os.listdir(class_path))
+class _counts[class name] = num_images
+total_images += num_images
+return total_images, class counts
+# Get statistics
+train total, train counts = count_images(train_ dir)
+valid total, valid counts = count_images(valid dir)
+print(f"Training images: {train_total}")
+print(f"Validation images: {valid total}")
+print(f"Number of classes: {len(train_counts) }")
+print(#"\nClass distribution (first 10):")
+for i, (class_name, count) in enumerate(list(train_counts.items())[:10]):
+print(t" {class name}: {count} images")
+
+-- image 4 (1342x682) --
+Training images: 70295
+
+Validation images: 17572
+
+Number of classes: 38
+
+Class distribution (first 10):
+Corn (maize) healthy: 1859 images
+Peach___ healthy: 1728 images
+Soybean __ healthy: 2022 images
+Tomato __ Bacterial spot: 1702 images
+Pepper, bell healthy: 1988 images
+Tomato __ Late blight: 1851 images
+Corn (maize) _Cercospora_leaf spot Gray_leaf spot: 1642 images
+Apple __ Apple scab: 2016 images
+Blueberry healthy: 1816 images
+Grape__Leaf_blight_(Isariopsis Leaf Spot): 1722 images
+
+
+===== PAGE 10 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1254x1378) --
+from tensorflow.keras.applications mobilenet v2 import preprocess input
+# Training data generator with light augmentation
+train_datagen = ImageDataGenerator(
+preprocessing function=preprocess input,
+horizontal_flip=True,
+rotation_range=2@e,
+zoom_range=@.15,
+width_shift_range=0.1,
+height_shift_range=0.1,
+¥ill_mode='reflect’
+)
+# Validation data generator (no augmentation)
+valid _datagen = ImageDataGenerator (preprocessing function=preprocess input)
+# Create data generators
+train_gen = train_datagen.flow_from_directory(
+train_dir,
+target_size=IMG_SIZE,
+batch_size=BATCH_SIZE,
+class_mode='categorical’,
+shuffle=True,
+seed=SEED
+)
+valid_gen = valid_datagen.flow_from_directory(
+valid_dir,
+target_size=IMG_ SIZE,
+batch_size=BATCH_SIZE,
+class_mode='categorical’,
+shuffle=False
+)
+Found 70295 images belonging to 38 classes.
+Found 17572 images belonging to 38 classes.
+
+
+===== PAGE 11 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1964x1054) --
+# Freeze all layers initially
+for layer in base _model.layers:
+
+layer.trainable = False
+# Unfreeze last N layers for fine-tuning
+if N_LAST_LAYERS > @:
+
+for layer in base _model.layers[-N_LAST_LAYERS: ]:
+
+layer.trainable = True
+
+# Count trainable parameters
+trainable count = sum([tf.size(w).numpy() for w in base model.trainable weights ])
+non_trainable_count = sum([tf.size(w).numpy() for w in base_model.non_trainable_ weights ])
+print(f"Trainable parameters: {trainable_count:, }")
+print(f"Non-trainable parameters: {non_trainable_count:, }")
+print(f"Unfrozen last {N_LAST_LAYERS} layers for fine-tuning")
+Trainable parameters: 732,480
+Non-trainable parameters: 1,525,504
+Unfrozen last 10 layers for fine-tuning
+
+-- image 4 (1751x426) --
+_——————— a_i
+from tensorflow.keras applications import MobileNetv2
+# Load pretrained MobileNetV2 backbone
+base_model = MobileNetV2(
+input_shape=IMG_SIZE + (3,),
+include_top=False, # Exclude the final classification layer
+weights="imagenet' # Use pre-trained ImageNet weights
+)
+print("MobileNetV2 loaded successfully!")
+print(f"Total layers in base model: {len(base_model.layers)}")
+Downloading data from https: //storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/mobilenet_v2 weights tf dim ordering tf kernels 1.0 224 no top.h5
+9406464/9406464 ————_—_———- 2s @us/step
+MobileNetV2 loaded successfully!
+Total layers in base model: 154
+
+
+===== PAGE 12 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1498x1520) --
+# Build the complete model
+
+inputs = keras.Input(shape=IMG SIZE + (3,))
+
+x = base _model(inputs, training=False) # Frozen BatchNorm layers
+
+x = layers.GlobalAveragePooling2D() (x)
+
+x = layers.Dropout(@.35) (x)
+
+x = layers.Dense(256, activation='relu')(x)
+
+x = layers.Dropout(@. 25) (x)
+
+outputs = layers.Dense(NUM_CLASSES, activation='softmax')(x)
+
+model = keras.Model(inputs, outputs, name="mobilenetv2_plant_disease classifier")
+
+# Display model summary
+
+model .summary()
+
+Model: “mobilenetv2_plant_disease_classifier"
+
+| Layer (type)                | Output Shape         |      Param #
+input_layer_1 (InputLayer)      (None, 224, 224, 3)
+mobilenetv2_1.00_224          (None, 7, 7, 1280)        2,257,984
+(Functional)
+global_average_pooling2d        (None, 1280)                   )
+(GlobalAveragePooling2D)
+dropout (Dropout)             (None, 1280)
+dense (Dense)               (None, 256)              327,936
+dropout_1 (Dropout)           (None, 256)                   )
+dense_1 (Dense)            | (None, 38)         |      9,766 |
+
+NS (|
+Total params: 2,595,686 (9.90 MB)
+
+Trainable params: 1,070,182 (4.08 MB)
+
+Non-trainable params: 1,525,504 (5.82 MB)
+
+
+===== PAGE 13 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1132x1594) --
+# Define training callbacks
+callbacks = [
+# Save best model based on validation accuracy
+keras .callbacks .ModelCheckpoint(
+"/content/mobilenetv2_best.keras”,
+monitor='val_accuracy’,
+save_best_only=True,
+verbose=1
+)
+# Reduce learning rate when validation loss plateaus
+keras .callbacks .ReduceLROnPlateau(
+monitor='val_loss’,
+factor=0.5,
+patience=3,
+verbose=1
+)
+# Stop training if no improvement
+keras.callbacks .EarlyStopping(
+monitor='val_loss’,
+patience=6,
+restore_best_weights=True,
+verbose=1
+)
+]
+print("Callbacks configured:")
+print(" 1. ModelCheckpoint - Saves best model")
+print(" 2. ReduceLROnPlateau - Adjusts learning rate")
+print(" 3. EarlyStopping - Prevents overfitting")
+Callbacks configured:
+1. ModelCheckpoint - Saves best model
+2. ReduceLROnPlateau - Adjusts learning rate
+3. EarlyStopping - Prevents overfitting
+
+-- image 4 (1698x706) --
+# Compile model with appropriate settings
+
+model .compile(
+optimizer=keras.optimizers.Adam(learning rate=1e-4), # Low learning rate for fine-tuning
+loss='categorical_crossentropy',
+metrics=[ ‘accuracy’ ]
+
+)
+
+print("Model compiled successfully!")
+
+print(f"Optimizer: Adam (lr=1e-4)")
+
+print(f"Loss function: Categorical Crossentropy")
+
+print(f"Metrics: Accuracy")
+
+Model compiled successfully!
+
+Optimizer: Adam (1r=1e-4)
+
+Loss function: Categorical Crossentropy
+
+Metrics: Accuracy
+
+
+===== PAGE 14 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1958x974) --
+# ---------------- Train (single stage: some backbone layers trainable from start) ----------------
+history = model.fit(
+train_gen,
+epochs=EPOCHS,
+validation_data=valid_gen,
+callbacks=callbacks
+»)
+/usr/local/1lib/python3.12/dist-packages/keras/src/trainers/data_adapters/py_dataset_adapter.py:121: UserWarning: Your ~PyDataset™ class should call ~suy
+self ._warn_if_super_not_called()
+Epoch 1/5
+2197/2197 ————_———__- @s_ 383ms/step - accuracy: 0.6634 - loss: 1.2439
+Epoch 1: val_accuracy improved from -inf to 0.91356, saving model to /content/mobilenetv2_best.keras
+2197/2197 —————_——_————_ 905s 402ms/step - accuracy: @.6635 - loss: 1.2436 - val_accuracy: 0.9136 - val_loss: @.2938 - learning_rate: 1.000@e-04
+Epoch 2/5
+2197/2197 ———————_ @s 377ms/step - accuracy: 0.9198 - loss: @.2525
+Epoch 2: val_accuracy improved from 0.91356 to @.95077, saving model to /content/mobilenetv2_best.keras
+2197/2197 ———————_—————-_ 854s 389ms/step - accuracy: @.9190 - loss: @.2524 - val_accuracy: 0.9508 - val_loss: @.1587 - learning_rate: 1.000@e-04
+Epoch 3/5
+2197/2197 ————_——_- @s_ 373ms/step - accuracy: 0.9389 - loss: 6.1887
+Epoch 3: val_accuracy did not improve from 0.95077
+2197/2197 —————_——_—_—_—__ 843s 384ms/step - accuracy: @.9389 - loss: @.1887 - val_accuracy: 0.9492 - val_loss: @.159@ - learning_rate: 1.000@e-04
+Epoch 4/5
+2197/2197 ————_——__- @s 373ms/step - accuracy: 0.9496 - loss: 6.1503
+Epoch 4: val_accuracy improved from 0.95077 to @.95726, saving model to /content/mobilenetv2_best.keras
+2197/2197 —————_——_—_——__ 846s 385ms/step - accuracy: @.9496 - loss: @.1503 - val_accuracy: 0.9573 - val_loss: @.1396 - learning_rate: 1.000@e-04
+Epoch 5/5
+2197/2197 ——————__- @s 376ms/step - accuracy: 0.9566 - loss: 6.1325
+Epoch 5: val_accuracy improved from 0.95726 to 0.96603, saving model to /content/mobilenetv2_best.keras
+2197/2197 ———————_—————__ 851s 387ms/step - accuracy: @.9566 - loss: @.1325 - val_accuracy: 0.9660 - val_loss: @.1072 - learning_rate: 1.000@e-04
+Restoring model weights from the end of the best epoch: 5.
+
+-- image 4 (1412x584) --
+# ---------------- Plot training curves ----------------
+plt.figure(figsize=(12,4))
+
+plt.subplot(1,2,1)
+
+plt.plot(history-history.get('accuracy',[]), label="train_accuracy')
+plt.plot(history-history.get('val_accuracy',[]), label="val_accuracy')
+plt.xlabel('epoch'); plt.ylabel('‘accuracy'); plt.legend(); plt.title(‘Accuracy')
+plt.subplot(1, 2,2)
+
+plt.plot(history-history.get(‘loss',[]), label="train_loss')
+plt.plot(history-history.get('val_loss',[]), label="val_loss')
+plt.xlabel('epoch'); plt.ylabel('loss'); plt.legend(); plt.title('Loss')
+plt.show()
+
+
+===== PAGE 15 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1514x590) --
+Accuracy                                             Loss
+0.96                                                                             — train_loss
+0.6                            — val_loss
+0.94
+0.92                                                 0.5
+>
+0.90
+8                                                g 04
+2                                                   fo}
+S 0.88                                                  =
+oO
+0.3
+0.86
+0.84                                                 0.2
+— train_accuracy
+0.82                              — val_accuracy
+=              0.21
+0.0   0.5   1.0   15   2.0   2.5   3.0   3.5   4.0          0.0   0.5   1.0   15   2.0   2.5   3.0   3.5   4.0
+epoch                                               epoch
+
+
+===== PAGE 16 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1890x442) --
+PH SSS 5255555>5525> (EVACUACE SSS SSsS5 55555555
+
+val_loss, val_acc = model.evaluate(valid_gen)
+
+print(f"Validation loss: {val_loss:.4f}, accuracy: {val_acc: .4f}")
+550/550 ———_—__—————— 27s 49ms/step - accuracy: 9.9823 - loss: 90.0575
+Validation loss: @.1072, accuracy: 9.96620
+
+-- image 4 (1320x418) --
+# ---------------- Save final model ----------------
+final_path = "/content/mobilenetv2_final.keras"
+model.save(final_path)
+print("Saved final model to:", final_path)
+
+Saved final model to: /content/mobilenetv2_final.keras
+
+
+===== PAGE 17 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1506x1808) --
+om
+© apppy 1X
+EY
+@ app.py >...
+82     @app-route(*/predict’, methods=[*POST*])
+83     def predict():
+84       if ‘file’ not in request.files:
+85           return jsonify({'error’: "No file uploaded'}), 400
+86
+87        file = request.files['file’]
+88
+89          if file.filename == '':
+98           return jsonify({'error’: "No file selected'}), 400
+91
+92          if file:
+93            filename = secure_filename(file.filename)
+94            filepath = os.path.join(app.config[ "UPLOAD _FOLDER*], filename)
+95            file.save(filepath)
+96
+97            try:
+98                prediction = predict_image(filepath)
+ee)
+1e0              # Save image to static folder for display
+1@1                static_filename = f"upload_{secrets.token_hex(8)}.jpg™
+102             static_path = os.path.join(app.config[ ‘STATIC_FOLDER'], ‘images’, static_filename)
+1@3               Image .open(filepath) .save(static_path)
+104
+1e5               # Store in session
+186               session['prediction’] = prediction
+107               session[*image_path’] = f'images/{static_filename}*
+188
+169              os.remove(filepath) # Clean up temp file
+116
+111              return jsonify({*success': True})
+112           except Exception as e:
+113                 if os.path.exists(filepath):
+114                   os.remove(filepath)
+115             return jsonify({*error’: str(e)}), 500
+116
+117     @app-route(*/result*)
+118     def result():
+119        prediction = session.get( ‘prediction’ )
+120        image _path = session.get(*image_ path")
+121
+122         if not prediction:
+123           return redirect(url_for(‘upload*))
+124
+125        return render_template(‘result.html’, prediction=prediction, image_path=image_path)
+126
+127      if _name_ == *_main_':
+128         load_model()
+129       app.run(debug=True, host="0.0.0.0', port=5@@)
+
+
+===== PAGE 18 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1334x1142) --
+templates > dj about.html
+
+1      <!DOCTYPE html>
+
+2      <html lang="en">
+
+3      <head>
+
+4          <meta charset="UTF-8">
+
+5         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+6         <title>About - Plant Disease Detection</title>
+
+7         <link rel="stylesheet" href="{{ url_for('static', filename='"style.css') }}">
+8      </head>
+
+9      <body>
+
+1e        <!-- Navigation -->
+
+11           <nav Class="navbar">
+
+12               <div class="nav-container">
+
+13                 <div class="nav-logo">
+
+14                      <div class="logo-icon">
+
+15                        <svg xmlns="http: //wew.w3.org/2000/svg" width="24" height="24" viewBox="@ @ 24 24" fi
+16                             <path d="M11 20A7 7 @ @ 1 9.8 6.1C15.5 5 17 4.48 19 2cl 2 2 4.18 2 8 @ 5.5-4.78 1
+v7                            <path d="M2 21c@-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+18                        </svg>
+
+19                    </div>
+
+2e                     <span class="logo-text">PlantCare AI</span>
+
+21                  </div>
+
+22                 <ul class="nav-menu">
+
+23                    <li><a href="/">Home</a></1i>
+
+24                   <li><a href="/about" class="active">About</a></1li>
+
+25                   <li><a href="/upload" class="btn-nav">Get Started</a></li>
+
+26                  </ul>
+
+27             </div>
+
+28          </nav>
+
+29
+
+30         <!-- About Hero -->
+
+31          «section class="about-hero">
+
+32               <div class="container">
+
+EE}                 <hi class="page-title">About Our Technology</h1>
+
+34                <p Class="page-subtitle">Transforming agriculture with artificial intelligence</p>
+35             </div>
+
+36          </section>
+
+37
+
+38         <!-- Mission Section -->
+
+39          «section class="mission-section">
+42               <div class="container">
+
+-- image 4 (2154x534) --
+ate =) AAU IY
+WARNING: This is a development server. Do not use it in a production deployment. Use a production
+WSGI server instead.
+
+* Running on all addresses (0.0.0.0)
+
+* Running on http://127.0.0.1:5000
+
+* Running on http://192.168.68.69:50e0
+
+Press CTRL+C to quit
+
+* Restarting with stat
+Model loaded successfully from mobilenetv2_best.keras
+
+* Debugger is active!
+
+* Debugger PIN: 124-630-444
+
+
+===== PAGE 19 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1763x2048) --
+@ PlantCare Al                                                      Home About   ==
+Al-Powered
+e
+Plant Disease                                   er aS
+7   \     J ON  Sv
+e                    .        ‘v ‘sles  WT beseg e?
+etection  eae
+Protect your crops with cutting-edge artificial intelligence.             e  FATS feo cae Be  gor
+Instant disease identification for healthier plants and better            aa fF Oe    -
+yields.                                 Vee           =
+ty Upload Image:        Learn More
+Why Choose PlantCare Al?
+©                             w                             =)
+Instant Detection                               High Accuracy                                   Easy to Use
+Get results in seconds with our advanced Al                  Powered by MobileNetV2 architecture for                    ‘Simple interface - just upload a photo and
+model trained on thousands of plant                             precise disease identification across                              get instant diagnosis. No technical
+images.                                                                 multiple plant species.                                              knowledge required.
+%                 10                  24/7
+38+            95%               +
+Plant Diseases                                      Accuracy Rate                                       Plant Species                                          Available
+Ready to Protect Your Plants?
+Start detecting plant diseases now with our Al-powered system
+Get Started Now
+About Plant Disease Detection System
+‘Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+o  Smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All ights reserved.
+
+
+===== PAGE 20 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1484x2048) --
+@  PlantCare Al                                                                                                              Home About
+Transforming agriculture with artificial intelligence
+Our Mission
+We are committed to revolutionizing plant health management
+through cutting-edge artificial intelligence. Our goal is to empower
+farmers, gardeners, and agricultural professionals with instant,
+accurate disease detection to protect crops and increase yields.
+By making advanced Al technology accessible to everyone, we help
+prevent crop losses, reduce pesticide use, and promote sustainable
+farming practices.
+How It Works
+Upload Image                             Al Analysis                              Get Results
+Take a photo of your plant leaf showing                    Our MobileNetv/2 model processes the                    Receive instant diagnosis with plant type
+‘symptoms or upload an existing image.                      image using deep learning algorithms.                            and condition identification.
+Our Al Model
+Architecture                                Training Data                             ‘Supported Plants
+‘MobileNetV2 with transfer learning                  Thousands of labeled plant images               Apple, Tomato, Potato, Grape, Com, and
+Disease Coverage
+38+ different diseases and healthy
+Benefits
+Ps          ©          @          4
+Early Detection                        Cost Effective                           Sustainable                          Fast & Accurate
+Identify diseases before they                      Reduce crop losses and                           Minimize unnecessary                         Get results in seconds with
+spread                                           treatment costs                                       pesticide use                                        high precision
+Try It Now
+Experience the power of Al-driven plant disease detection
+About Plant Disease Detection System
+‘Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+© smart oridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+
+===== PAGE 21 IMAGE OCR (3 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1920x1361) --
+@  PlantCare Al                                                                                         Home About
+Take or upload a clear photo of the affected plant leaf
+Drag & Drop Image Here
+or click to browse from your device
+Supported formats: JPG, JPEG, PNG (Max 16MB)
+(Q Choose Image
+ Tips for Best Results
+Take photos in good                 Focus on the affected
+Ke    th          steady
+v  lighting                     Y eat area                    V_ Keep the camera steady
+J Avoid blurry images
+© smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. Alll rights reserved.
+
+
+===== PAGE 22 IMAGE OCR (4 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*
+
+-- image 3 (1920x1534) --
+@ PlantCare Al                                                                      Home — About   | NewAnalysis |
+Analysis Complete
+Here's what we found
+Uploaded Image
+¥ HEALTHY PLANT
+Tippee Sin res ti eee tenn RY Pee tae Syn! 3: Nae      ‘ee
+U2 Se APM Sree cles ray       SE                              PLANT TYPE
+pens     ae Nis SO Nis Nt                    Tomato
+poets a         SSS etn ees Ae aaa Meee
+A ENE}            LO oR ae   Syne    a tart oe
+de setatr aes,         eee me Secret                              CONDITION
+Sisicser eae     Sf: ESS deep aS                     healthy
+aot SaNaGMia Peis vis Eee Reman nee
+Rienahinaiea conretatg a ec ina Ua eee asa eace rage ey
+‘X Keep Your Plant Healthy
+— Continue regular watering and care
+— Ensure adequate sunlight and nutrients
+— Monitor for any changes in appearance
+— Maintain good air circulation
+2) Analyze Another Image            @ Back to Home
+@ smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+-- image 4 (1920x1534) --
+@ Prantcare al                                                      Home About
+Analysis Complete
+Here's what we found
+Uploaded Image
+kelp: thy, tated Tact     »
+he CSTR at See a” AAR aR
+eae RQ MRE Leer Rica dag by                        PLANT TYPE
+pBihert ec mmas Gnawa MOY rs
+epee 2 ghee
+Reise a ee Ane 6                       C         .
+HE SESE ap age Zener ary                              orn (maize)
+eliked eed att eat 8 Bd
+cee
+Aes CGE Mea rays                                                         CONDITION
+Patras oi Rs a                            Common rust
+2 Recommended Actions
+— Isolate affected plants to prevent spread
+— Consult with an agricultural expert
+— Consider appropriate treatment methods
+— Monitor other plants for similar symptoms:
+<) Analyze Another Image           @ Back to Home
+@ smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+
+===== PAGE 23 IMAGE OCR (2 images) =====
+
+-- image 1 (1255x343) --
+5) SMARTBRIDGE
+
+-- image 2 (418x110) --
+A         Pf ewer oo
+— aannieire -*

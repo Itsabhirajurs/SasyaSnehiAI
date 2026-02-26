@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload - Plant Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container nav-container">
+        <div class="nav-logo">
+          <div class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+              <path d="M11 20a7 7 0 0 1 9.8-6.1C15.5 5 17 4.4 19 2c1.9 2 4 4.1 2.8 8.1-1.1 3.6-4.8 5.5-8.7 4.5-0.8 2.7-3.1 5.4-6.1 5.4z" />
+              <path d="M2 21c0-3 1.8-5.3 5.1-6 2.3-0.5 4.8-1.5 5.9-3" />
+            </svg>
+          </div>
+          <span>PlantCare AI</span>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a class="btn-nav" href="/upload">Get Started</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="page-title">Upload Plant Image</h1>
+        <p class="page-subtitle">Take or upload a clear photo of the affected plant leaf</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="upload-box" id="drop-zone">
+        <p><strong>Drag &amp; Drop Image Here</strong></p>
+        <p class="small-muted">or click to browse from your device</p>
+        <p class="small-muted">Supported formats: JPG, JPEG, PNG (Max 16MB)</p>
+        <label for="file-input">Choose Image</label>
+        <input id="file-input" type="file" accept="image/*" />
+      </div>
+
+      <div class="tips">
+        <h3>Tips for Best Results</h3>
+        <ul>
+          <li>Take photos in good lighting</li>
+          <li>Focus on the affected area</li>
+          <li>Keep the camera steady</li>
+          <li>Avoid blurry images</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Smart Bridge Hyderabad</p>
+        <p>Empowering agriculture through innovative AI solutions</p>
+        <p>Copyright 2025 Smart Bridge Hyderabad. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+
+      function uploadFile(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("/predict", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "/result";
+            } else {
+              alert(data.error || "Upload failed");
+            }
+          })
+          .catch(() => alert("Upload failed"));
+      }
+
+      dropZone.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          uploadFile(file);
+        }
+      });
+
+      dropZone.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        dropZone.style.borderColor = "#2e7d32";
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.borderColor = "#b7d2bd";
+      });
+
+      dropZone.addEventListener("drop", (event) => {
+        event.preventDefault();
+        dropZone.style.borderColor = "#b7d2bd";
+        const file = event.dataTransfer.files[0];
+        if (file) {
+          uploadFile(file);
+        }
+      });
+    </script>
+  </body>
+</html>

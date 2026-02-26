@@ -1,0 +1,262 @@
+
+
+===== OCR PAGE 17 =====
+)                                                                                                                        All   Smart
+Gil >) SMARTBRIDGE                                                                                          41’ Internz
+Let's Bridge the Gap
+Milestone 5: Application Building
+In this section, we will build a complete web application integrated with our trained
+MobileNetV2 model. The application provides an intuitive user interface where users can upload
+plant leaf images and receive instant disease detection results with actionable
+recommendations.
+This milestone includes the following activities:
+e Building HTML Templates
+e Creating CSS Stylesheets
+e Developing Flask Backend
+Activity 5.1: Build Flask Backend (app.py)
+File Location: app.py (in project root directory)
+‘2 app.py 1X
+© app.py >...
+82      @lapp.route("/predict’, methods=["PO5T"])
+ER      def predict():
+84          tf ‘file’ not in request.files:
+a5              return jsonify({"error’: "No file uploaded'}), 460
+a7          file = request.files["file*]
+a9          if file.filename == "":
+El]              return jsonify({"error’: "No file selected'}), 460
+a2          if file:
+a3              filename = secure _filename(file. filename)
+a4              filepath = os.path.join(app.config[ "UPLOAD FOLDER"], filename)
+95              file.save(filepath)
+36
+oF             try:
+og                  prediction = predict_image(filepath)
+1e1                  static_filename = f"upload_{secrets.token_hex(8)}.jpg”
+1e2                  static path = os.path.join(app.config[ "STATIC _FOLDER"], "images", static filename)
+163                  Image .open(filepath).save(static_path)
+184
+185                  # Store in session
+166                  session["prediction’] = prediction
+1a?                  session[*image_path’] = f'images/{static_filename}"
+185
+169                  os.remove(filepath) # Clean up temp file
+118
+111                  return jsonify({*success": True})
+112              except Exception as e:
+113                  if os.path.exists(filepath):
+114                      os ..remove(filepath)
+115                  return jsonify({‘error': str(e)}), 580
+116
+117      @app.route("/result*)
+118      def result():
+119          prediction = session.get(" prediction’)
+128          image path = session.get("*image path")
+122          tf not prediction:
+123              return redirect(url_for(‘upload'))
+125          return render_template(*result.html', prediction=prediction, image_path=image_ path)
+126
+137      if name ==" _ main":
+138          load_modelf)
+129          app.run(debug=True, host="@.0.0.8', port=5e00)
+
+
+===== OCR PAGE 18 =====
+)                                                                                                                        All   Smart
+Gil >) SMARTBRIDGE                                                                                          41) Internz
+Let's Bridge the Gap
+Run the code:
+WARNING: This is a development server. Do not use it in a production deployment. Use a production
+WSGI server instead.
+* Running on all addresses (0.0.0.0)
+* Running on http://127.0.0.1:5000
+* Running on http://192.168.68.69:5600
+Press CTRL+C to quit
+* Restarting with stat
+Model loaded successfully from mobilenetv2_best.keras
+* Debugger is active!
+* Debugger PIN: 124-630-444
+Activity 5.2: Building HTML Templates
+For this project, we will create four HTML files that form the complete user interface. All HTML
+files should be saved in the templates folder.
+Activity 5.2.1: Create Home Page (home.html)
+The home page serves as the landing page for PlantCare AI, showcasing the application's
+features and capabilities.
+File Location: templates /home.html
+Key Features:
+e Hero section with call-to-action
+e Feature highlights (Instant Detection, High Accuracy, Easy to Use)
+e Statistics display (38+ diseases, 95% accuracy, 10+ plant species)
+e Responsive navigation bar
+Code:
+templates > dj about.html
+1       <IDOCTYFE html>
+2      <html lang="en">
+Fi]       <head>
+4         <meta charset="UTF-8">
+5        <meta name="viewport™ content="width=device-width, initial-scale=1.8">
+6         <titlessbout - Plant Disease Detection</title>
+7)         clink rel="stylesheet” href="{{ url_for('static', filename="style.css'}) }}">
+g       <fhead>
+a                       cbady>
+11         <nav class="navbar">
+12            <div class="nav-container">
+1:               <div class="nav-logo">
+14                       ediv class="logo-1oon">
+15                       <5veE axmlns="http: J /wew.W3..org/20ee8/sve" width="24" height="24" viewBox="@ @ 24 24" Fi
+16                              <path d="MI1 2007 7 6 @ 1 9.8 6.1C15.5 5 17 4.48 19 2cl 2 2 4.18 2 8B 5.5-4.78 I
+17                              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+18                                                                     </SVg>
+19                                                           <fdiv>
+22                                 <span class="logo-text">Planbtare Al</span>
+21                                                 </div>
+22               <ul class="nav-menu">
+23                   <lix<a href="/">Homes/a></ 11>
+24                 <lipga href="/about" class="active">aAbout</a></1i>
+25                   ¢<li-<a href="/upload” class="btn-nav">Get Started¢/ao</li>
+27                                       </div>
+28                            </naw>
+=           esection class-"about-hero">
+32            <div class="container">
+32                  <hi class="page-title">About Our Technology</hi>
+34                <p class<"page-subtitle">Transforming agriculture with artificial intelligence</p>
+35                                       </div>
+36                            </section>
+3a           esection class="nission_section"»
+4a            édiv class="container">
+
+
+===== OCR PAGE 19 =====
+—)                         Let's Bridge the Gap
+@ PlantCare Al                                                            Home About
+Al-Powered
+e
+Plant Disease                                       f              gers
+\   ee sae
+e                   i anys 2 Oo  NP
+Detection                 La ae
+Ne es ee         :
+a     biel    ve    t   “
+Protect your crops with cutting-edge artificial intelligence.              ONG SO ipeereng ee     =
+Instant disease identification for healthier plants and better           BON i> Wie    re     -
+=    <
+yields.                                  to           =
+‘       ~_                       <
+5 Upload Image       Learn More
+Why Choose PlantCare Al?
+©                                G                                ea)
+Instant Detection                                High Accuracy                                    Easy to Use
+Get results in seconds with our advanced Al               Powered by MobileNetV2 architecture for                Simple interface - just upload a photo and
+model trained on thousands of plant                           precise disease identification across                            get instant diagnosis. No technical
+images.                                                                  multiple plant species.                                               knowledge required.
+°
+38+                      95%                      10+                      24/7
+Plant Diseases                            Accuracy Rate                            Plant Species                              Available
+Ready to Protect Your Plants?
+Start detecting plant diseases now with our Al-powered system
+About Plant Disease Detection System
+Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+oS    Smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad, All rights reserved.
+
+
+===== OCR PAGE 20 =====
+(. -                                                                Al Smart
+XH)                      Let's Bridge the Gap
+.
+Activity 5.2.2: Create About Page (about.html)
+The About page provides detailed information about the technology, mission, and AI model used
+© Piontcare a                            sone soe EEE
+Transforming agriculture with artificial intelligence
+Our Mission
+We are committed to revolutionizing plant health management
+through cutting-edge artificial intelligence. Our goal is to empower
+farmers, gardeners, and agricultural professionals with instant,
+accurate disease detection to protect crops and increase yields.
+By making advanced Al technology accessible to everyone, we help
+prevent crop losses, reduce pesticide use, and promote sustainable
+farming practices.
+How It Works
+Upload Image                              Al Analysis                                Get Results
+Take a photo of your plant leaf showing                     Our MobileNetV2 model processes the                    Receive instant diagnosis with plant type
+symptoms or upload an existing image.                     image using deep learning algorithms.                            and condition identification.
+Our Al Model
+Architecture                              Training Data                           Supported Plants
+MobileNetV2 with transfer learning                    Thousands of labeled plant images                 ‘Apple, Tomato, Potato, Grape, Corn, and
+more
+Disease Coverage
+38+ different diseases and healthy
+conditions
+Benefits
+=                                                   x
+E         @         4
+a                                             &
+Early Detection                       Cost Effective                         Sustainable                        Fast & Accurate
+Identify diseases before they                   Reduce crop losses and                       Minimize unnecessary                     Get results in seconds with
+spread                                      treatment costs                                  pesticide use                                   high precision
+Try It Now
+Experience the power of Al-driven plant disease detection
+About Plant Disease Detection System
+Our advanced Al-powered platform utilizes state-of-the-art deep learning technology to accurately identify plant diseases in real-time. With a comprehensive
+database of plant conditions and diseases, we help farmers, gardeners, and agricultural professionals make informed decisions about plant health management.
+© smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+
+===== OCR PAGE 21 =====
+)                                               Fall Smart
+< >) SMARTBRIDGE                                   Av Internz
+Let's Bridge the Gap
+Activity 5.2.3: Create Upload Page (upload.html)
+The upload page allows users to select and upload plant leaf images for disease detection.
+File Location: templates /upload.html
+@  PlantCare Al                                                                                    Home — About    G==3
+Upload Plant Image
+Take or upload a clear photo of the affected plant leaf
+ |
+Drag & Drop Image Here
+or click to browse from your device
+Supported formats: JPG, JPEG, PNG (Max 16MB)
+ Tips for Best Results
+v  eae in good           v  yoauson the affected          keep the camera steady
+J. Avoid blurry images
+ smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
+
+
+===== OCR PAGE 22 =====
+a                                         Al intern
+XH)                        Let's Bridge the Gap
+Activity 5.2.4: Create Result Page (result.html)
+The result page displays the disease detection analysis with detailed information and
+recommendations.
+File Location: templates/result.html
+@ Prontcare at                                            Home About
+P
+Analysis Complete
+Here's what we found
+Uploaded Image
+Rene
+‘iat Sony et Gaon awe                     Corn (maize)
+bp ea erage”
+BESS       Sf                              Common rust
+.                                    { Recommended Actions
+ smart Bridge Hyderabad
+@ Piantcare ai                                                Home Aout
+A
+Analysis Complete
+Here's what we found
+Uploaded Image
+Eattea        THAURSAS RE Sutiest: tie. ty: Seagal ge
+BOOS A We eee Peer
+‘X Keep Your Plant Healthy
+~ Continue regular watering and care
++ Ensure adequate sunlight and nutrients
++ Monitor for any changes in appearance
+= Maintain good air circulation
+© smart Bridge Hyderabad
+Empowering agriculture through innovative Al solutions
+© 2025 Smart Bridge Hyderabad. All rights reserved.
