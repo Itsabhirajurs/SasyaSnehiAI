@@ -1,0 +1,38 @@
+{
+  "chlorpyrifos": {
+    "bee_toxicity": "High",
+    "soil_microbe_impact": "Severe",
+    "human_health_risk": "Moderate",
+    "recommended_alternative": "Neem oil / Spinosad"
+  },
+  "imidacloprid": {
+    "bee_toxicity": "High",
+    "soil_microbe_impact": "Moderate",
+    "human_health_risk": "Moderate",
+    "recommended_alternative": "Neem-based insecticide"
+  },
+  "glyphosate": {
+    "bee_toxicity": "Low",
+    "soil_microbe_impact": "Moderate",
+    "human_health_risk": "Moderate",
+    "recommended_alternative": "Mulching + manual weed control"
+  },
+  "carbendazim": {
+    "bee_toxicity": "Low",
+    "soil_microbe_impact": "Moderate",
+    "human_health_risk": "Moderate",
+    "recommended_alternative": "Trichoderma bio-fungicide"
+  },
+  "mancozeb": {
+    "bee_toxicity": "Moderate",
+    "soil_microbe_impact": "Moderate",
+    "human_health_risk": "Moderate",
+    "recommended_alternative": "Copper + bio-control rotation"
+  },
+  "acephate": {
+    "bee_toxicity": "High",
+    "soil_microbe_impact": "Moderate",
+    "human_health_risk": "High",
+    "recommended_alternative": "Azadirachtin / Spinosad"
+  }
+}

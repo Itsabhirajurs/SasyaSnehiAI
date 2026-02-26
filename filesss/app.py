@@ -9,6 +9,13 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input as mobil
 from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename
 
+from services.advisory import generate_advisory
+from services.chemical import analyze_chemicals
+from services.llm_layer import advisory_chat_reply, translate_advisory
+from services.risk import compute_environmental_risk
+from services.severity import estimate_severity
+from services.weather import fetch_weather
+
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, "uploads")
@@ -206,6 +213,20 @@ def predict_image(image_path):
     }
 
 
+def _to_int(value, default=0):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
+
+def _to_float(value, default=None):
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return default
+
+
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -235,8 +256,61 @@ def predict():
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(filepath)
 
+        chemicals_used = request.form.get("chemicals_used", "")
+        soil_type = request.form.get("soil_type", "Unknown")
+        watering_frequency = _to_int(request.form.get("watering_frequency"), default=0)
+        tilling_info = request.form.get("tilling_info", "")
+        soil_test_values = request.form.get("soil_test_values", "")
+        language = request.form.get("language", "en")
+        city = request.form.get("city", "")
+        latitude = _to_float(request.form.get("latitude"), default=None)
+        longitude = _to_float(request.form.get("longitude"), default=None)
+
         try:
             prediction = predict_image(filepath)
+            severity = estimate_severity(filepath)
+            weather = fetch_weather(city=city, lat=latitude, lon=longitude)
+            risk = compute_environmental_risk(prediction["confidence"], weather)
+            chemicals_info = analyze_chemicals(chemicals_used)
+            advisory = generate_advisory(
+                disease=prediction["condition"],
+                severity=severity["severity_level"],
+                risk_score=risk["risk_score"],
+                risk_level=risk["risk_level"],
+                chemicals_info=chemicals_info,
+                soil_type=soil_type,
+                watering_frequency=watering_frequency,
+            )
+
+            advisory_translated = translate_advisory(advisory["summary_text"], language)
+
+            prediction.update(
+                {
+                    "severity_level": severity["severity_level"],
+                    "infected_percentage": severity["infected_percentage"],
+                    "risk_score": risk["risk_score"],
+                    "risk_level": risk["risk_level"],
+                    "weather": weather,
+                    "input_chemicals": chemicals_info.get("input_chemicals", []),
+                    "chemical_warnings": chemicals_info.get("warnings", []),
+                    "chemical_details": chemicals_info.get("details", []),
+                    "possible_causes": advisory["possible_causes"],
+                    "recommended_actions": advisory["recommended_actions"],
+                    "chemicals_to_avoid": advisory["chemicals_to_avoid"],
+                    "safer_alternatives": advisory["safer_alternatives"],
+                    "consultation_suggestion": advisory["consultation_suggestion"],
+                    "urgency": advisory["urgency"],
+                    "spread_warning": advisory["spread_warning"],
+                    "advisory_summary": advisory["summary_text"],
+                    "advisory_translated": advisory_translated,
+                    "language": language,
+                    "soil_type": soil_type,
+                    "watering_frequency": watering_frequency,
+                    "tilling_info": tilling_info,
+                    "soil_test_values": soil_test_values,
+                }
+            )
+
             static_filename = f"upload_{secrets.token_hex(8)}.jpg"
             static_path = os.path.join(
                 app.config["STATIC_FOLDER"], "images", static_filename
@@ -247,7 +321,7 @@ def predict():
             session["image_path"] = f"images/{static_filename}"
 
             os.remove(filepath)
-            return jsonify({"success": True})
+            return jsonify({"success": True, "redirect": url_for("result")})
         except Exception as exc:
             if os.path.exists(filepath):
                 os.remove(filepath)
@@ -265,6 +339,25 @@ def result():
     return render_template(
         "result.html", prediction=prediction, image_path=image_path
     )
+
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    payload = request.get_json(silent=True) or {}
+    question = (payload.get("question") or "").strip()
+    if not question:
+        return jsonify({"error": "Question is required"}), 400
+
+    prediction = session.get("prediction")
+    if not prediction:
+        return jsonify({"error": "No analysis context found. Please upload an image first."}), 400
+
+    reply = advisory_chat_reply(
+        context_payload=prediction,
+        user_question=question,
+        language_code=prediction.get("language", "en"),
+    )
+    return jsonify({"reply": reply})
 
 
 if __name__ == "__main__":
