@@ -130,6 +130,23 @@
         {% if prediction.consultation_suggestion %}
         <p>{{ prediction.consultation_suggestion.message }}</p>
         <p><a class="btn-secondary" target="_blank" href="{{ prediction.consultation_suggestion.maps_link }}">Find Nearby Agricultural Nursery</a></p>
+
+        <h3 style="margin-top: 16px;">Nearby Agri Shops</h3>
+        {% if prediction.nearby_shops and prediction.nearby_shops.available %}
+        <ul>
+          {% for shop in prediction.nearby_shops.shops %}
+          <li>
+            <strong>{{ shop.name }}</strong><br />
+            <span class="small-muted">{{ shop.address }}</span>
+            {% if shop.maps_link %}
+            <br /><a target="_blank" href="{{ shop.maps_link }}">Open in Maps</a>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="small-muted">Nearby shop lookup unavailable right now. You can still use the Maps search button above.</p>
+        {% endif %}
         {% else %}
         <p class="small-muted">Current severity does not require immediate consultant referral.</p>
         {% endif %}

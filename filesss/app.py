@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 
 from services.advisory import generate_advisory
 from services.chemical import analyze_chemicals
+from services.geo_lookup import find_nearby_agri_shops
 from services.llm_layer import advisory_chat_reply, translate_advisory
 from services.risk import compute_environmental_risk
 from services.severity import estimate_severity
@@ -282,6 +283,15 @@ def predict():
                 watering_frequency=watering_frequency,
             )
 
+            nearby_shops = {"available": False, "reason": "Not required for this case", "shops": []}
+            if severity["severity_level"] == "Severe":
+                nearby_shops = find_nearby_agri_shops(
+                    city=city,
+                    lat=latitude,
+                    lon=longitude,
+                    limit=5,
+                )
+
             advisory_translated = translate_advisory(advisory["summary_text"], language)
 
             prediction.update(
@@ -303,6 +313,7 @@ def predict():
                     "spread_warning": advisory["spread_warning"],
                     "advisory_summary": advisory["summary_text"],
                     "advisory_translated": advisory_translated,
+                    "nearby_shops": nearby_shops,
                     "language": language,
                     "soil_type": soil_type,
                     "watering_frequency": watering_frequency,
